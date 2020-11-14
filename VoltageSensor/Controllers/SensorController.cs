@@ -6,7 +6,7 @@ using VoltageSensor.Services;
 
 namespace VoltageSensor.Controllers
 {
-    [Route("")]
+    [Route("api/")]
     [ApiController]
     public class SensorController : ControllerBase
     {
@@ -22,11 +22,12 @@ namespace VoltageSensor.Controllers
         {
             return _sensor.GetRecent();
         }
-        [Route("/all")]
         [HttpGet]
-        public ActionResult<List<Sensor>> GetA()
+        [Route("/all")]
+        public ActionResult<List<Sensor>> GetAll()
         {
             return _sensor.Get();
         }
+
     }
 }

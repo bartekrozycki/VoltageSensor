@@ -11,12 +11,12 @@ namespace VoltageSensor.Services
 
         public SensorService(ISensorDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            MongoClient _client = new MongoClient(settings.ConnectionString);
+
+            var database = _client.GetDatabase(settings.DatabaseName);
 
             _sensor = database.GetCollection<Sensor>(settings.SensorCollectionName);
         }
-
         public List<Sensor> Get()
             => _sensor.Find(doc => true).ToList();
         public Sensor Get(string Id)
