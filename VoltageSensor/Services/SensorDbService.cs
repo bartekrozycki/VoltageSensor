@@ -5,11 +5,11 @@ using VoltageSensor.Models.VoltageSensor;
 
 namespace VoltageSensor.Services
 {
-    public class SensorService
+    public class SensorDbService
     {
         private readonly IMongoCollection<Sensor> _sensor;
 
-        public SensorService(ISensorDatabaseSettings settings)
+        public SensorDbService(ISensorDatabaseSettings settings)
         {
             MongoClient _client = new MongoClient(settings.ConnectionString);
 
@@ -18,11 +18,13 @@ namespace VoltageSensor.Services
             _sensor = database.GetCollection<Sensor>(settings.SensorCollectionName);
         }
         public List<Sensor> Get()
-            => _sensor.Find(doc => true).ToList();
+            => _sensor.Find(bson => true).ToList();
         public Sensor Get(string Id)
-            => _sensor.Find(doc => doc.Id == Id).FirstOrDefault();
+            => _sensor.Find(bson => bson.Id == Id).FirstOrDefault();
         public Sensor GetRecent()
-            => _sensor.Find(doc => true).Sort(new BsonDocument("_id", -1)).FirstOrDefault();
+            => _sensor.Find(bson => true).SortByDescending(bson => bson.TimeStamp).FirstOrDefault();
+        public List<Sensor> GetRecent(int count)
+            => _sensor.Find(bson => bson.error == false).SortByDescending(bson => bson.TimeStamp).Limit(count).ToList();
         public Sensor Create(Sensor entry)
         {
             _sensor.InsertOne(entry);
@@ -30,11 +32,11 @@ namespace VoltageSensor.Services
         }
 
         public void Update(string Id, Sensor entry) 
-            => _sensor.ReplaceOne(doc => doc.Id == Id, entry);
+            => _sensor.ReplaceOne(bson => bson.Id == Id, entry);
 
         public void Remove(Sensor entry)
-            => _sensor.DeleteOne(doc => doc.Id == entry.Id);
+            => _sensor.DeleteOne(bson => bson.Id == entry.Id);
         public void Remove(string Id)
-            => _sensor.DeleteOne(doc => doc.Id == Id);
+            => _sensor.DeleteOne(bson => bson.Id == Id);
     }
 }

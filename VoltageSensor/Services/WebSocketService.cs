@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
 using System.IO;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -14,12 +16,11 @@ using VoltageSensor.Models.VoltageSensor;
 
 namespace VoltageSensor.Services
 {
-
     public class WebSocketService
     {
-        private readonly SensorService _sensor;
+        private readonly SensorDbService _sensor;
 
-        public WebSocketService(SensorService sensor)
+        public WebSocketService(SensorDbService sensor)
         {
             _sensor = sensor;
         }
@@ -41,9 +42,8 @@ namespace VoltageSensor.Services
 
                             string inComeString = System.Text.Encoding.UTF8.GetString(buffer.Memory.Span);
                             RawSensor inComeDocument = JsonConvert.DeserializeObject<RawSensor>(inComeString);
-
-                            
                             _sensor.Create(new Sensor(inComeDocument));
+
                             break;
                         default:
                             break;
@@ -55,25 +55,7 @@ namespace VoltageSensor.Services
                 }
                 request = await webSocket.ReceiveAsync(buffer.Memory, CancellationToken.None);
             }
-
-            //while (!result.CloseStatus.HasValue)
-            //{
-            //    try
-            //    {
-            //        string string_buffer = System.Text.Encoding.UTF8.GetString(buffer);
-            //        Sensor s = System.Text.Json.JsonSerializer.Deserialize<Sensor>(string_buffer);
-            //        _sensor.Create(s);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        System.Diagnostics.Debug.WriteLine(e.Message);
-            //    }
-
-
-            //    result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            //}
-
-            //await webSocket.CloseAsync(request.CloseStatus.Value, request.CloseStatusDescription, CancellationToken.None);
+            System.Diagnostics.Debug.WriteLine("Client disconnected");
         }
 
         public async Task ProcessWebsocketSession(HttpContext context, Func<Task> next)

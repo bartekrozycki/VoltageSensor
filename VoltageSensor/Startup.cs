@@ -34,13 +34,13 @@ namespace VoltageSensor
             services.AddSingleton<ISensorDatabaseSettings>
                     ( sp => sp.GetRequiredService<IOptions<SensorDatabaseSettings>>().Value );
 
-            services.AddSingleton<SensorService>();
+            services.AddSingleton<SensorDbService>();
 
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SensorService _sensor)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SensorDbService _sensor)
         {
 
             if (env.IsDevelopment())
