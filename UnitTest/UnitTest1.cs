@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using VoltageSensor.Models.VoltageSensor;
 using VoltageSensor.Models;
+using VoltageSensor.Models.VoltageSensor;
 
 namespace UnitTest
 {
@@ -53,9 +53,9 @@ namespace UnitTest
                 });
             }
 
-            Assert.IsTrue( (math.regression(l, now.AddSeconds(10)) - 10 ) <= 0.00001);
-            Assert.IsTrue( (math.regression(l, now.AddSeconds(25)) - 25 ) <= 0.00001);
-            Assert.IsTrue( (math.regression(l, now.AddSeconds(100)) - 100) <= 0.00001);
+            Assert.IsTrue((math.regression(l, now.AddSeconds(10)) - 10) <= 0.00001);
+            Assert.IsTrue((math.regression(l, now.AddSeconds(25)) - 25) <= 0.00001);
+            Assert.IsTrue((math.regression(l, now.AddSeconds(100)) - 100) <= 0.00001);
         }
     }
 }

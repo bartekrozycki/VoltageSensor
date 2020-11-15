@@ -1,15 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure;
-using MongoDB.Driver;
 using Newtonsoft.Json;
 using System;
 using System.Buffers;
-using System.IO;
-using System.Linq;
 using System.Net.WebSockets;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using VoltageSensor.Models.VoltageSensor;
@@ -30,10 +23,11 @@ namespace VoltageSensor.Services
             //Int32 bufferSize = Marshal.SizeOf<RawSensor>();
 
             using IMemoryOwner<byte> buffer = MemoryPool<byte>.Shared.Rent(1024 * 4);
-            
+
             ValueWebSocketReceiveResult request = await webSocket.ReceiveAsync(buffer.Memory, CancellationToken.None);
 
-            while (webSocket.State == WebSocketState.Open) {
+            while (webSocket.State == WebSocketState.Open)
+            {
                 try
                 {
                     switch (request.MessageType)
@@ -49,7 +43,8 @@ namespace VoltageSensor.Services
                             break;
                     }
 
-                } catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     System.Diagnostics.Debug.WriteLine($"{e.Message}\r\n{e.StackTrace}");
                 }

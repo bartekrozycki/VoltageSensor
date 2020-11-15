@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
@@ -31,6 +30,7 @@ namespace VoltageSensor.Controllers
         public ActionResult<double> PredictGet(int seconds, int minutes, int hours)
         {
             List<Sensor> list = _sensor.GetRecent(100);
+
             DateTime predictTime = DateTime.Now;
             predictTime.AddSeconds(seconds);
             predictTime.AddMinutes(minutes);
@@ -44,17 +44,17 @@ namespace VoltageSensor.Controllers
 
         [HttpGet]
         [Route("/random/{x}")]
-        public ActionResult<List<Sensor>> generateRandom(int x)                                      
+        public ActionResult<List<Sensor>> generateRandom(int x)
         {
             List<Sensor> data_list = new List<Sensor>();
 
             Random rand = new Random();
-            
+
             for (int i = 0; i < x; ++i)
             {
                 Sensor randomDoc = new Sensor();
                 randomDoc.Id = ObjectId.GenerateNewId().ToString();
-                randomDoc.CurrentVoltage = rand.NextDouble()*3 + 2;
+                randomDoc.CurrentVoltage = rand.NextDouble() * 3 + 2;
                 randomDoc.error = rand.Next(0, 100) < 70 ? true : false;
                 randomDoc.TimeStamp = DateTime.Now.AddSeconds(i);
 

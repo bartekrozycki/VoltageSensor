@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using System.Collections.Generic;
 using VoltageSensor.Models.VoltageSensor;
 
@@ -31,7 +30,7 @@ namespace VoltageSensor.Services
             return entry;
         }
 
-        public void Update(string Id, Sensor entry) 
+        public void Update(string Id, Sensor entry)
             => _sensor.ReplaceOne(bson => bson.Id == Id, entry);
 
         public void Remove(Sensor entry)
