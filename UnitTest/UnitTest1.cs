@@ -34,18 +34,6 @@ namespace UnitTest
                 error = false,
                 TimeStamp = DateTime.Now
             });
-            l.Add(new Sensor
-            {
-                CurrentVoltage = 1,
-                error = false,
-                TimeStamp = DateTime.Now
-            });
-            l.Add(new Sensor
-            {
-                CurrentVoltage = 1,
-                error = false,
-                TimeStamp = DateTime.Now
-            });
 
             math.regression(l, DateTime.Now);
         }

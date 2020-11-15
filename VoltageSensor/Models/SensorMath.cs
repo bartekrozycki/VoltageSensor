@@ -25,14 +25,12 @@ namespace VoltageSensor.Models
                 ++i;
             }
 
-            double[] poly = Fit.Polynomial(x, y, 4);
-            double myPredict = 0;
+            Tuple<double, double> linear = Fit.Line(x, y);
             double p = predictTime.Ticks;
 
-            for (i = 0; i < poly.Length; ++i)
-                myPredict += (Math.Pow(p, i) * poly[i]);
+            double predict = linear.Item1 + (p * linear.Item2);
 
-            return myPredict;
+            return predict;
         }
     }
 }

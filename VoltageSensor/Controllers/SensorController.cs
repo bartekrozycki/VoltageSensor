@@ -20,15 +20,15 @@ namespace VoltageSensor.Controllers
 
         [HttpGet]
         [Route("/recent")]
-        public ActionResult<List<Sensor>> Get()
+        public ActionResult<Sensor> Get()
         {
-            return _sensor.GetRecent(10);
+            return _sensor.GetRecent();
         }
         [HttpGet]
         [Route("/predict/{seconds:int=0}")]
         [Route("/predict/{minutes:int=0}/{seconds:int=0}")]
         [Route("/predict/{hours:int=0}/{minutes:int=0}/{seconds:int=0}")]
-        public ActionResult<double> GetAll(int seconds, int minutes, int hours)
+        public ActionResult<double> PredictGet(int seconds, int minutes, int hours)
         {
             List<Sensor> list = _sensor.GetRecent(100);
             DateTime predictTime = DateTime.Now;
